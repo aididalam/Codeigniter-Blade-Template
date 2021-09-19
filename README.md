@@ -1,4 +1,4 @@
-#Blade Template in Codeigniter
+# Blade Template in Codeigniter
 
 This can render .blade.php in Codeinteger and can convert Strings into blade templating system.
 
@@ -64,7 +64,7 @@ $String_blade_output=$this->bladeview->render($string, $data,flase,true);
 
 ---
 
-###Example
+### Example
 
 ```php
 class Welcome extends CI_Controller {
