@@ -21,7 +21,7 @@ $this->load->library("bladeview");
 ### Methods:
 
 ```php
-$this->blade->set('name', 'Jhon')
+$this->bladeview->set('name', 'Jhon')
 				->set('car_array', array("BMW", "FORD", "Mazda"))
 				->append('car_array', "Volvo")
 				->set_data(array('age' => 22, 'gender' => 'male'))
