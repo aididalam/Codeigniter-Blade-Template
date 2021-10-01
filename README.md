@@ -9,7 +9,7 @@ This can render .blade.php in Codeinteger and can convert Strings into blade tem
 
 ### Installation
 
-- Download the package by [clicking here](https://github.com/aididalam/Codeigniter-Blade-Template/archive/refs/tags/first.zip "clicking here")
+- Download the package by [clicking here](https://github.com/aididalam/Codeigniter-Blade-Template/archive/refs/tags/v2.zip "clicking here")
 - Extract the file to your project folder
 
 ### Initialization
