@@ -8,7 +8,7 @@
  * @package     Blade
  * @category    Libraries
  * @version     1.0.0
- * @url         https://github.com/aididalam/Codeigniter-Blade-Template
+ * @url         https://github.com/aididalam/CI-BladeView
  *
  */
 class BladeView {
@@ -153,7 +153,11 @@ class BladeView {
             $this->type = "string";
         }
         if (isset($data)) {
-            $this->set_data($data);
+            if (is_object($data)) {
+                $this->set_data(json_decode(json_encode($data), true));
+            } else {
+                $this->set_data($data);
+            }
         }
 
         // Compile and run template
