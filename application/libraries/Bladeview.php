@@ -351,237 +351,240 @@ class BladeView {
     protected function _compile_comments($value) {
         $value = preg_replace('/\{\{--(.+?)(--\}\})?\n/', "<?php // $1 ?>", $value);
 
-return preg_replace('/\{\{--((.|\s)*?)--\}\}/', "<?php /* $1 */ ?>\n", $value);
-}
+        return preg_replace('/\{\{--((.|\s)*?)--\}\}/', "<?php /* $1 */ ?>\n", $value);
+    }
 
 
-/**
-* Rewrites Blade echo statements into PHP echo statements.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_echos($value) {
-return preg_replace('/\{\{(.+?)\}\}/', '<?php echo $1; ?>', $value);
-}
+    /**
+     * Rewrites Blade echo statements into PHP echo statements.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_echos($value) {
+        return preg_replace('/\{\{(.+?)\}\}/', '<?php echo $1; ?>', $value);
+    }
 
 
-/**
-* Rewrites Blade "for else" statements into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_forelse($value) {
-preg_match_all('/(\s*)@forelse(\s*\(.*\))(\s*)/', $value, $matches);
+    /**
+     * Rewrites Blade "for else" statements into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_forelse($value) {
+        preg_match_all('/(\s*)@forelse(\s*\(.*\))(\s*)/', $value, $matches);
 
-foreach ($matches[0] as $forelse) {
-preg_match('/\$[^\s]*/', $forelse, $variable);
+        foreach ($matches[0] as $forelse) {
+            preg_match('/\$[^\s]*/', $forelse, $variable);
 
-// Once we have extracted the variable being looped against, we can add
-// an if statement to the start of the loop that checks if the count
-// of the variable being looped against is greater than zero.
-$if = "<?php if (count({$variable[0]}) > 0): ?>";
+            // Once we have extracted the variable being looped against, we can add
+            // an if statement to the start of the loop that checks if the count
+            // of the variable being looped against is greater than zero.
+            $if = "<?php if (count({$variable[0]}) > 0): ?>";
 
-$search = '/(\s*)@forelse(\s*\(.*\))/';
+            $search = '/(\s*)@forelse(\s*\(.*\))/';
 
-$replace = '$1' . $if . '<?php foreach$2: ?>';
+            $replace = '$1' . $if . '<?php foreach$2: ?>';
 
-$blade = preg_replace($search, $replace, $forelse);
+            $blade = preg_replace($search, $replace, $forelse);
 
-$value = str_replace($forelse, $blade, $value);
-}
+            $value = str_replace($forelse, $blade, $value);
+        }
 
-return $value;
-}
-
-
-/**
-* Rewrites Blade "empty" statements into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_empty($value) {
-return str_replace('@empty', '<?php endforeach; ?><?php else: ?>', $value);
-}
+        return $value;
+    }
 
 
-/**
-* Rewrites Blade "forelse" endings into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_endforelse($value) {
-return str_replace('@endforelse', '<?php endif; ?>', $value);
-}
+    /**
+     * Rewrites Blade "empty" statements into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_empty($value) {
+        return str_replace('@empty', '<?php endforeach; ?><?php else: ?>', $value);
+    }
 
 
-/**
-* Rewrites Blade structure openings into PHP structure openings.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_structure_openings($value) {
-$pattern = '/(\s*)@(if|elseif|foreach|for|while)(\s*\(.*\))/';
-
-return preg_replace($pattern, '$1<?php $2$3: ?>', $value);
-}
+    /**
+     * Rewrites Blade "forelse" endings into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_endforelse($value) {
+        return str_replace('@endforelse', '<?php endif; ?>', $value);
+    }
 
 
-/**
-* Rewrites Blade structure closings into PHP structure closings.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_structure_closings($value) {
-$pattern = '/(\s*)@(endif|endforeach|endfor|endwhile)(\s*)/';
+    /**
+     * Rewrites Blade structure openings into PHP structure openings.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_structure_openings($value) {
+        $pattern = '/(\s*)@(if|elseif|foreach|for|while)(\s*\(.*\))/';
 
-return preg_replace($pattern, '$1<?php $2; ?>$3', $value);
-}
-
-
-/**
-* Rewrites Blade else statements into PHP else statements.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_else($value) {
-return preg_replace('/(\s*)@(else)(\s*)/', '$1<?php $2: ?>$3', $value);
-}
+        return preg_replace($pattern, '$1<?php $2$3: ?>', $value);
+    }
 
 
-/**
-* Rewrites Blade "unless" statements into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_unless($value) {
-$pattern = '/(\s*)@unless(\s*\(.*\))/';
+    /**
+     * Rewrites Blade structure closings into PHP structure closings.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_structure_closings($value) {
+        $pattern = '/(\s*)@(endif|endforeach|endfor|endwhile)(\s*)/';
 
-return preg_replace($pattern, '$1<?php if( ! ($2)): ?>', $value);
-}
-
-
-/**
-* Rewrites Blade "unless" endings into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_endunless($value) {
-return str_replace('@endunless', '<?php endif; ?>', $value);
-}
+        return preg_replace($pattern, '$1<?php $2; ?>$3', $value);
+    }
 
 
-/**
-* Execute user defined compilers.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_extensions($value) {
-foreach ($this->_extensions as $compiler) {
-$value = call_user_func($compiler, $value);
-}
-
-return $value;
-}
-
-
-/**
-* Rewrites Blade @include statements into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_includes($value) {
-$pattern = static::matcher('include');
-
-return preg_replace($pattern, '$1<?php echo $this->_include$2; ?>', $value);
-}
+    /**
+     * Rewrites Blade else statements into PHP else statements.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_else($value) {
+        if (strpos($value, "elseif") !== false) {
+            return $value;
+        }
+        return preg_replace('/(\s*)@(else)(\s*)/', '$1<?php $2: ?>$3', $value);
+    }
 
 
-/**
-* Rewrites Blade "@layout" expressions into valid PHP.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_layouts($value) {
-$pattern = $this->matcher('layout');
+    /**
+     * Rewrites Blade "unless" statements into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_unless($value) {
+        $pattern = '/(\s*)@unless(\s*\(.*\))/';
 
-// Find "@layout" expressions
-if (!preg_match_all($pattern, $value, $matches, PREG_SET_ORDER)) {
-return $value;
-}
-
-// Delete "@layout" expressions
-$value = preg_replace($pattern, '', $value);
-
-// Include layouts at the end of template
-foreach ($matches as $set) {
-$value .= "\n" . $set[1] . '<?php echo $this->_include' . $set[2] . "; ?>\n";
-}
-
-return $value;
-}
+        return preg_replace($pattern, '$1<?php if( ! ($2)): ?>', $value);
+    }
 
 
-/**
-* Rewrites Blade @yield statements into Section statements.
-*
-* The Blade @yield statement is a shortcut to the Section::yield method.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_yields($value) {
-$pattern = $this->matcher('yield');
-
-return preg_replace($pattern, '$1<?php echo $this->_yield$2; ?>', $value);
-}
+    /**
+     * Rewrites Blade "unless" endings into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_endunless($value) {
+        return str_replace('@endunless', '<?php endif; ?>', $value);
+    }
 
 
-/**
-* Rewrites Blade @section statements into Section statements.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_section_start($value) {
-$pattern = $this->matcher('section');
+    /**
+     * Execute user defined compilers.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_extensions($value) {
+        foreach ($this->_extensions as $compiler) {
+            $value = call_user_func($compiler, $value);
+        }
 
-return preg_replace($pattern, '$1<?php $this->_section_start$2; ?>', $value);
-}
-
-
-/**
-* Rewrites Blade @endsection statements into Section statements.
-*
-* @param string $value
-* @return string
-*/
-protected function _compile_section_end($value) {
-$replace = '<?php $this->_section_end(); ?>';
-
-return str_replace('@endsection', $replace, $value);
-}
+        return $value;
+    }
 
 
-/**
-* Rewrites Blade yield section statements into valid PHP.
-*
-* @return string
-*/
-protected function _compile_yield_sections($value) {
-$replace = '<?php echo $this->_yield($this->_section_end()); ?>';
+    /**
+     * Rewrites Blade @include statements into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_includes($value) {
+        $pattern = static::matcher('include');
 
-return str_replace('@yield_section', $replace, $value);
-}
+        return preg_replace($pattern, '$1<?php echo $this->_include$2; ?>', $value);
+    }
+
+
+    /**
+     * Rewrites Blade "@layout" expressions into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_layouts($value) {
+        $pattern = $this->matcher('layout');
+
+        // Find "@layout" expressions
+        if (!preg_match_all($pattern, $value, $matches, PREG_SET_ORDER)) {
+            return $value;
+        }
+
+        // Delete "@layout" expressions
+        $value = preg_replace($pattern, '', $value);
+
+        // Include layouts at the end of template
+        foreach ($matches as $set) {
+            $value .= "\n" . $set[1] . '<?php echo $this->_include' . $set[2] . "; ?>\n";
+        }
+
+        return $value;
+    }
+
+
+    /**
+     * Rewrites Blade @yield statements into Section statements.
+     *
+     * The Blade @yield statement is a shortcut to the Section::yield method.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_yields($value) {
+        $pattern = $this->matcher('yield');
+
+        return preg_replace($pattern, '$1<?php echo $this->_yield$2; ?>', $value);
+    }
+
+
+    /**
+     * Rewrites Blade @section statements into Section statements.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_section_start($value) {
+        $pattern = $this->matcher('section');
+
+        return preg_replace($pattern, '$1<?php $this->_section_start$2; ?>', $value);
+    }
+
+
+    /**
+     * Rewrites Blade @endsection statements into Section statements.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_section_end($value) {
+        $replace = '<?php $this->_section_end(); ?>';
+
+        return str_replace('@endsection', $replace, $value);
+    }
+
+
+    /**
+     * Rewrites Blade yield section statements into valid PHP.
+     *
+     * @return string
+     */
+    protected function _compile_yield_sections($value) {
+        $replace = '<?php echo $this->_yield($this->_section_end()); ?>';
+
+        return str_replace('@yield_section', $replace, $value);
+    }
 }
