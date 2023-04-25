@@ -29,4 +29,12 @@ class Example extends CI_Controller {
 		);
 		$this->bladeview->render($string, $data, false); //3rd parameter false is important
 	}
+
+	public function methods() {
+		$this->bladeview->set('name', 'Jhon')
+			->set('car_array', array("BMW", "FORD", "Mazda"))
+			->append('car_array', "Volvo")
+			->set_data(array('age' => 22, 'gender' => 'male'))
+			->render('test', array('message' => 'Hello World!'));
+	}
 }
