@@ -97,6 +97,8 @@ $String_blade_output=$this->bladeview->render($string, $data,flase,true);
 ### Example
 
 ```php
+use \Aidid\BladeView\BladeView;
+
 class Example extends CI_Controller {
 	public $bladeview;
 	public function __construct() {
@@ -124,5 +126,8 @@ class Example extends CI_Controller {
 	}
 }
 ```
+
+Check this [controller](https://github.com/aididalam/Codeigniter-Blade-Template/blob/main/application/controllers/Example.php "controller") for better understand of BladeView's function.
+Check this [View Folder](https://github.com/aididalam/Codeigniter-Blade-Template/tree/main/application/views "View Folder") for better understand of view structure.
 
 For more details please follow laravel blade documentaion.
