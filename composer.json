@@ -1,8 +1,8 @@
 {
-	"description": "Blade View for Codeigniter 3",
+    "description": "Blade View for Codeigniter 3",
     "name": "aidid/ci_blade",
     "type": "library",
-	"homepage": "https://github.com/aididalam/Codeigniter-Blade-Template",
+    "homepage": "https://github.com/aididalam/Codeigniter-Blade-Template",
     "autoload": {
         "psr-4": {
             "Aidid\\BladeView\\": "src/"
