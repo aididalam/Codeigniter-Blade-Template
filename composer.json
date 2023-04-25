@@ -1,0 +1,19 @@
+{
+    "name": "aidid/ci_blade",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Aidid\\BladeView\\": "src/"
+        },
+        "files": [
+            "src/BladeView.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Aidid Alam",
+            "email": "aididalam11@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace Aidid\BladeView;
 
 /**
  * Same as laravel Blade Template
@@ -25,6 +27,7 @@ class BladeView {
         'empty',
         'includes',
         'layouts',
+        'extends',
         'section_start',
         'section_end',
         'yields',
@@ -528,6 +531,34 @@ class BladeView {
         $value = preg_replace($pattern, '', $value);
 
         // Include layouts at the end of template
+        foreach ($matches as $set) {
+            $value .= "\n" . $set[1] . '<?php echo $this->_include' . $set[2] . "; ?>\n";
+        }
+
+        return $value;
+    }
+
+    /**
+     * Edit Blade library - add @extends for Laravel Blade 5
+     * @author : kiendt@hblab.vn
+     * @date : 01/12/2015
+     * Rewrites Blade "@extends" expressions into valid PHP.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function _compile_extends($value) {
+        $pattern = $this->matcher('extends');
+
+        // Find "@extends" expressions
+        if (!preg_match_all($pattern, $value, $matches, PREG_SET_ORDER)) {
+            return $value;
+        }
+
+        // Delete "@extends" expressions
+        $value = preg_replace($pattern, '', $value);
+
+        // Include extends at the end of template
         foreach ($matches as $set) {
             $value .= "\n" . $set[1] . '<?php echo $this->_include' . $set[2] . "; ?>\n";
         }
