@@ -1,6 +1,8 @@
 {
     "name": "aidid/ci_blade",
     "type": "library",
+    "type": "project",
+	"homepage": "https://github.com/aididalam/Codeigniter-Blade-Template",
     "autoload": {
         "psr-4": {
             "Aidid\\BladeView\\": "src/"
