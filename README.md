@@ -8,14 +8,19 @@ This can render .blade.php in Codeinteger and can convert Strings into blade tem
   > comments, echos, forelse, empty, includes, layouts, section_start, section_end, yields, yield_sections, extensions, else, unless, endunless, endforelse, structure_openings, structure_closings
 
 ### Installation
-
-- Download the package by [clicking here](https://github.com/aididalam/Codeigniter-Blade-Template/archive/refs/tags/v2.zip "clicking here")
-- Extract the file to your project folder
+```
+composer require aidid/ci_blade
+```
 
 ### Initialization
 
 ```php
-$this->load->library("bladeview");
+use \Aidid\BladeView\BladeView;
+	public $bladeview;
+	public function __construct() {
+		parent::__construct();
+		$this->bladeview = new BladeView();
+	}
 ```
 
 ### Methods:
