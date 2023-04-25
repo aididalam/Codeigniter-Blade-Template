@@ -10,7 +10,7 @@ namespace Aidid\BladeView;
  * @package     Blade
  * @category    Libraries
  * @version     1.0.0
- * @url         https://github.com/aididalam/CI-BladeView
+ * @url         https://github.com/aididalam/Codeigniter-Blade-Template
  *
  */
 class BladeView {
@@ -199,7 +199,7 @@ class BladeView {
         if (!is_file($full_path) && $this->type == "view") {
             show_error('[Blade] Unable to find view: ' . $view . "<br>If you want to render String as Blade then pass 3rd parameter false (\$String, \$Render_Data, false)
             <br>
-            Documentations: <a href='https://github.com/aididalam/CI-BladeView'>Github</a>");
+            Documentations: <a href='https://github.com/aididalam/Codeigniter-Blade-Template'>Github</a>");
         }
 
         return $full_path;
